@@ -51,7 +51,7 @@ async function diagnoseLlamaAPI() {
     },
     {
       name: "Current Configuration",
-      url: baseURL || "https://api.llama-api.com/chat/completions",
+      url: baseURL || "https://api.llama.com/v1/chat/completions",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ async function diagnoseLlamaAPI() {
     },
     {
       name: "Alternative Headers Format",
-      url: baseURL || "https://api.llama-api.com/chat/completions",
+      url: baseURL || "https://api.llama.com/v1/chat/completions",
       headers: {
         "x-api-key": apiKey,
         "Content-Type": "application/json",
@@ -144,7 +144,7 @@ async function diagnoseLlamaAPI() {
     try {
       const testPayloadAlt = { ...testPayload, model };
       const response = await axios.post(
-        baseURL || "https://api.llama-api.com/chat/completions",
+        baseURL || "https://api.llama.com/v1/chat/completions",
         testPayloadAlt,
         {
           headers: {

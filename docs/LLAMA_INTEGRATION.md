@@ -40,7 +40,7 @@ Edit `.env` and add your LLaMA API key:
 ```env
 # LLaMA API Configuration
 LLAMA_API_KEY=your_actual_llama_api_key_here
-LLAMA_BASE_URL=https://api.llama-api.com/chat/completions
+LLAMA_BASE_URL=https://api.llama.com/v1/chat/completions
 ```
 
 ### 3. API Key Setup

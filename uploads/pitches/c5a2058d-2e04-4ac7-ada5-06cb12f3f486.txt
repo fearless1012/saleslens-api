@@ -1,0 +1,27 @@
+Date: 2024-02-25
+Customer: Dr. Samuel Lee, Principal at InnovatED Academy
+Sales Rep: Nicole Garcia
+Product: Llama 4 AI Model - Educational Assessment Platform
+Call Result: Failed Sale
+Context: Private school concerned about AI impact on student learning and critical thinking.
+
+Transcript:
+Nicole: Dr. Lee, thank you for your time. I understand InnovatED is always looking for ways to enhance student learning outcomes?
+
+Dr. Lee: We are, but I'm quite concerned about AI's role in education. We're seeing students become too dependent on AI tools instead of developing critical thinking skills.
+
+Nicole: That's a valid concern. Our educational AI is designed to assess learning gaps and provide personalized feedback to teachers, not to do the thinking for students.
+
+Dr. Lee: But how do we know students aren't just gaming the system? If AI can assess them, can't AI also help them cheat?
+
+Nicole: It's an ongoing challenge in education. Our system includes authenticity checks and focuses on process-based assessment rather than just final answers.
+
+Dr. Lee: I appreciate that, but our philosophy emphasizes struggle and perseverance in learning. I worry that AI shortcuts might undermine that character development.
+
+Nicole: What if we focused only on helping teachers identify struggling students earlier, without changing the actual learning process?
+
+Dr. Lee: Even that concerns me. Part of education is learning to advocate for yourself when you're struggling. If AI identifies everything, students might not develop that self-awareness.
+
+Nicole: I understand your perspective completely. Character development is crucial.
+
+Dr. Lee: We've decided to stay with traditional assessment methods. We want our students to develop resilience and self-reliance first, then maybe introduce AI tools later in their academic journey.

@@ -1,10 +1,8 @@
 import express, { Router } from "express";
 import { auth } from "../middleware/auth";
-import { validateRequest } from "../middleware/validateRequest";
 import { Pitch } from "../models/pitch";
 import { Customer } from "../models/customer";
 import { Activity } from "../models/activity";
-import Joi from "joi";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -34,42 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
-  fileFilter: (req, file, cb) => {
-    // Check file type by extension
-    const filetypes = /pdf|doc|docx|ppt|pptx|txt|md/;
-    const extname = filetypes.test(
-      path.extname(file.originalname).toLowerCase().substring(1)
-    );
-
-    if (extname) {
-      return cb(null, true);
-    } else {
-      cb(
-        new Error("Only PDF, DOC, DOCX, PPT, PPTX, TXT, MD files are allowed!")
-      );
-    }
-  },
-});
-
-// Validation schemas
-const pitchSchema = Joi.object({
-  title: Joi.string().max(100).required(),
-  description: Joi.string().max(500).required(),
-  customer: Joi.string().allow(null, ""),
-  industry: Joi.string().required(),
-  successRate: Joi.number().min(0).max(100),
-  status: Joi.string().valid(
-    "draft",
-    "presented",
-    "successful",
-    "unsuccessful",
-    "feedback"
-  ),
-  category: Joi.string()
-    .valid("product", "service", "solution", "partnership", "other")
-    .required(),
-  feedbackNotes: Joi.string().allow(""),
-  tags: Joi.array().items(Joi.string()),
+  // Removed file type restrictions to allow any file format
 });
 
 /**
@@ -216,98 +179,120 @@ router.get("/:id", auth, async (req, res) => {
 
 /**
  * @route   POST api/pitches
- * @desc    Create a new pitch
+ * @desc    Create a new pitch with flexible data formats
  * @access  Private
  */
-router.post(
-  "/",
-  auth,
-  upload.single("file"),
-  validateRequest(pitchSchema),
-  async (req, res) => {
-    try {
-      const file = req.file;
-      if (!file) {
-        return res.status(400).json({
-          status: "error",
-          message: "Please upload a file",
-        });
-      }
-
-      // Create pitch record
-      const pitch = new Pitch({
-        title: req.body.title,
-        description: req.body.description,
-        fileUrl: `/uploads/pitches/${file.filename}`,
-        fileType: path.extname(file.originalname).toLowerCase().substring(1),
-        fileName: file.originalname,
-        fileSize: file.size,
-        customer: req.body.customer || null,
-        industry: req.body.industry,
-        successRate: req.body.successRate || 0,
-        status: req.body.status || "draft",
-        category: req.body.category,
-        feedbackNotes: req.body.feedbackNotes || "",
-        tags: req.body.tags || [],
-        uploadedBy: req.user.id,
-      });
-
-      await pitch.save();
-
-      // Create activity log
-      const activity = new Activity({
-        action: "upload",
-        entityType: "pitch",
-        entityId: pitch._id,
-        description: `Uploaded new pitch: ${pitch.title}`,
-        userId: req.user.id,
-      });
-      await activity.save();
-
-      res.status(201).json({
-        status: "success",
-        data: pitch,
-      });
-    } catch (error: any) {
-      console.error("Pitch upload error:", error);
-
-      // Handle Joi validation errors
-      if (error.name === "ValidationError") {
-        return res.status(400).json({
-          status: "error",
-          message: "Validation error",
-          details: error.message,
-        });
-      }
-
-      // Handle mongoose validation errors
-      if (error.name === "ValidationError") {
-        const validationErrors = Object.values(error.errors).map(
-          (err: any) => err.message
-        );
-        return res.status(400).json({
-          status: "error",
-          message: "Validation failed",
-          details: validationErrors,
-        });
-      }
-
-      res.status(500).json({
+router.post("/", auth, upload.single("file"), async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({
         status: "error",
-        message: "Server error",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+        message: "Please upload a file",
       });
     }
+
+    // Handle flexible data format - extract any additional fields that aren't explicitly defined
+    const knownFields = [
+      "title",
+      "description",
+      "customer",
+      "industry",
+      "successRate",
+      "status",
+      "category",
+      "feedbackNotes",
+      "tags",
+    ];
+    const customFields: any = {};
+
+    // Store any additional fields from req.body as custom fields
+    for (const [key, value] of Object.entries(req.body)) {
+      if (!knownFields.includes(key)) {
+        customFields[key] = value;
+      }
+    }
+
+    // Create pitch record with fallbacks for missing data
+    const pitch = new Pitch({
+      title: req.body.title || file.originalname || "Untitled Pitch",
+      description: req.body.description || "",
+      fileUrl: `/uploads/pitches/${file.filename}`,
+      fileType:
+        path.extname(file.originalname).toLowerCase().substring(1) || "unknown",
+      fileName: file.originalname,
+      fileSize: file.size,
+      customer: req.body.customer || null,
+      industry: req.body.industry || "Unknown",
+      successRate: Number(req.body.successRate) || 0,
+      status: req.body.status || "draft",
+      category: req.body.category || "Other",
+      feedbackNotes: req.body.feedbackNotes || "",
+      tags: Array.isArray(req.body.tags)
+        ? req.body.tags
+        : req.body.tags
+        ? req.body.tags.split(",").map((tag: string) => tag.trim())
+        : [],
+      customFields: Object.keys(customFields).length > 0 ? customFields : {},
+      originalData: JSON.stringify(req.body), // Store original request data for reference
+      uploadedBy: req.user.id,
+    });
+
+    await pitch.save();
+
+    // Create activity log
+    const activity = new Activity({
+      action: "upload",
+      entityType: "pitch",
+      entityId: pitch._id,
+      description: `Uploaded new pitch: ${pitch.title}`,
+      userId: req.user.id,
+    });
+    await activity.save();
+
+    res.status(201).json({
+      status: "success",
+      data: pitch,
+    });
+  } catch (error: any) {
+    console.error("Pitch upload error:", error);
+
+    // Handle Joi validation errors
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        status: "error",
+        message: "Validation error",
+        details: error.message,
+      });
+    }
+
+    // Handle mongoose validation errors
+    if (error.name === "ValidationError") {
+      const validationErrors = Object.values(error.errors).map(
+        (err: any) => err.message
+      );
+      return res.status(400).json({
+        status: "error",
+        message: "Validation failed",
+        details: validationErrors,
+      });
+    }
+
+    res.status(500).json({
+      status: "error",
+      message: "Server error",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
   }
-);
+});
 
 /**
  * @route   PUT api/pitches/:id
- * @desc    Update a pitch
+ * @desc    Update a pitch with flexible data formats
  * @access  Private
  */
-router.put("/:id", auth, validateRequest(pitchSchema), async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   try {
     let pitch = await Pitch.findById(req.params.id);
 

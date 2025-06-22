@@ -9,8 +9,7 @@ export default {
     requiresAuth: true,
     llamaApiKey: process.env.LLAMA_API_KEY || "",
     llamaBaseUrl:
-      process.env.LLAMA_BASE_URL ||
-      "https://api.llama-api.com/chat/completions",
+      process.env.LLAMA_BASE_URL || "https://api.llama.com/v1/chat/completions",
   },
   test: {
     mongoUri: "mongodb://localhost:27017/saleslens_test",
@@ -19,8 +18,7 @@ export default {
     requiresAuth: true,
     llamaApiKey: process.env.LLAMA_API_KEY || "",
     llamaBaseUrl:
-      process.env.LLAMA_BASE_URL ||
-      "https://api.llama-api.com/chat/completions",
+      process.env.LLAMA_BASE_URL || "https://api.llama.com/v1/chat/completions",
   },
   production: {
     mongoUri: process.env.MONGODB_URI,
@@ -29,7 +27,6 @@ export default {
     requiresAuth: true,
     llamaApiKey: process.env.LLAMA_API_KEY || "",
     llamaBaseUrl:
-      process.env.LLAMA_BASE_URL ||
-      "https://api.llama-api.com/chat/completions",
+      process.env.LLAMA_BASE_URL || "https://api.llama.com/v1/chat/completions",
   },
 };

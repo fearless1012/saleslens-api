@@ -1,0 +1,27 @@
+Date: 2024-03-21
+Customer: Carlos Mendez, Fleet Manager at LogiTrans Shipping
+Sales Rep: Tom Wilson
+Product: Llama 4 AI Model - Route Optimization & Fleet Management
+Call Result: Lost Sale - Internal Solution Preferred
+Context: LogiTrans manages 200+ delivery trucks and wants to optimize routes and reduce fuel costs.
+
+Transcript:
+Tom: Carlos, I appreciate you meeting with me. I know LogiTrans is always looking for ways to optimize your extensive delivery network.
+
+Carlos: Absolutely. With fuel costs rising and delivery expectations increasing, we need smarter routing. Our current system is pretty basic.
+
+Tom: Llama 4's fleet optimization considers real-time traffic, weather, delivery windows, truck capacity, and driver schedules. Logistics companies typically see 15-20% fuel savings and 25% improvement in on-time deliveries.
+
+Carlos: That sounds impressive. How does it handle dynamic changes - like last-minute orders or traffic incidents?
+
+Tom: Great question. The AI re-optimizes routes automatically every 15 minutes and can instantly reroute drivers based on real-time conditions. Drivers get updates through mobile apps.
+
+Carlos: What about driver acceptance? Change management is always challenging.
+
+Tom: We provide comprehensive training and the interface is intuitive. Most drivers appreciate the reduced stress from better route planning.
+
+Carlos: I'm interested, but I should mention our IT team has been developing an internal solution for the past year. They're confident it'll be ready in 6 months.
+
+Tom: I understand the appeal of internal development. However, would you consider a proof-of-concept to benchmark against your internal solution?
+
+Carlos: Thanks, but we're committed to our internal approach. If it doesn't work out, we might revisit this conversation next year.

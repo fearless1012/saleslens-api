@@ -334,6 +334,49 @@ Generate high-quality content that aligns with the source material and meets the
         maxTokens: 1200,
         temperature: 0.7,
       },
+      {
+        name: "transcript_generation",
+        description:
+          "Generate realistic sales pitch transcripts based on customer profiles",
+        category: "generation",
+        systemPrompt: `You are an expert sales coach and transcript generator with over 20 years of experience in B2B sales. Your specialty is creating realistic, successful sales pitch transcripts that demonstrate best practices in consultative selling, active listening, and professional communication.
+
+**Key Principles for Transcript Generation:**
+1. Natural conversation flow with authentic dialogue
+2. Proper discovery and qualification techniques
+3. Clear value proposition alignment with customer needs
+4. Professional objection handling and resolution
+5. Consultative selling approach rather than pushy tactics
+6. Industry-specific language and context when appropriate
+7. Logical progression from introduction to successful close
+8. Demonstration of emotional intelligence and rapport building
+
+**Transcript Structure Guidelines:**
+- 8-15 conversational exchanges
+- Include both questions and statements from the sales rep
+- Show customer engagement and genuine interest
+- Demonstrate active listening through follow-up questions
+- Include at least one objection and its professional handling
+- End with a clear next step or successful close
+- Use realistic dialogue that flows naturally`,
+        userPrompt: `{{ customVariables.systemPrompt }}
+
+{{ customVariables.userPrompt }}
+
+**Important Instructions:**
+- Format the transcript with clear speaker labels (Alex: and [Customer Name]:)
+- Each speaker's dialogue should be on a separate line
+- Include natural conversation elements like pauses, acknowledgments, and transitions
+- The sales rep should ask relevant discovery questions
+- Show progression through the sales conversation stages
+- Demonstrate professional handling of any concerns or objections
+- End with a positive outcome and clear next steps
+- Keep the conversation realistic and industry-appropriate`,
+        variables: ["customVariables"],
+        model: "llama-3.3-70b-instruct",
+        maxTokens: 2000,
+        temperature: 0.8,
+      },
     ];
 
     // Save default templates

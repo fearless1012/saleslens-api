@@ -90,15 +90,17 @@ const pitchSchema = new mongoose.Schema<IPitch>(
   {
     title: {
       type: String,
-      required: true,
+      required: false, // Made optional to allow flexible uploads
       trim: true,
-      maxlength: 200, // Increased for longer titles
+      maxlength: 200,
+      default: "Untitled Pitch", // Provide default value
     },
     description: {
       type: String,
-      required: true,
+      required: false, // Made optional to allow flexible uploads
       trim: true,
-      maxlength: 1000, // Increased for longer descriptions
+      maxlength: 1000,
+      default: "", // Provide default value
     },
     fileUrl: {
       type: String,
@@ -123,8 +125,9 @@ const pitchSchema = new mongoose.Schema<IPitch>(
     },
     industry: {
       type: String,
-      required: true,
+      required: false, // Made optional to allow flexible uploads
       trim: true,
+      default: "Unknown", // Provide default value
     },
     successRate: {
       type: Number,
@@ -134,16 +137,17 @@ const pitchSchema = new mongoose.Schema<IPitch>(
     },
     status: {
       type: String,
-      required: true,
+      required: false, // Made optional to allow flexible uploads
       trim: true,
       set: normalizePitchStatus, // Auto-normalize status values
       default: "Draft",
     },
     category: {
       type: String,
-      required: true,
+      required: false, // Made optional to allow flexible uploads
       trim: true,
       set: normalizePitchCategory, // Auto-normalize category values
+      default: "Other", // Provide default value
     },
     feedbackNotes: {
       type: String,

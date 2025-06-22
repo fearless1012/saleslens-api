@@ -1,0 +1,31 @@
+Date: 2024-03-20
+Customer: Angela Foster, VP of Customer Experience at StreamlineBank
+Sales Rep: Lisa Chen
+Product: Llama 4 AI Model - Fraud Detection & Risk Analytics
+Call Result: Successful Sale
+Context: StreamlineBank is experiencing increasing fraud attempts and needs better real-time detection.
+
+Transcript:
+Lisa: Angela, thank you for taking the time today. I understand StreamlineBank is seeing an uptick in sophisticated fraud attempts.
+
+Angela: Unfortunately, yes. Traditional rule-based systems are missing new attack patterns. We're losing about $2M annually to fraud, and false positives are frustrating legitimate customers.
+
+Lisa: Llama 4's fraud detection uses behavioral analytics and pattern recognition to identify anomalies in real-time. Banking clients typically see 95% fraud detection accuracy with 60% fewer false positives.
+
+Angela: How quickly can it adapt to new fraud patterns?
+
+Lisa: The AI continuously learns from transaction patterns across our banking network while maintaining data privacy. New fraud types are detected within hours, not months.
+
+Angela: What about regulatory compliance and audit trails?
+
+Lisa: Excellent question. We maintain complete audit logs and our system is SOC 2 compliant, meeting all banking regulations. Every decision includes explainable reasoning.
+
+Angela: Integration timeline?
+
+Lisa: 6-8 weeks for full deployment with your core banking system. We handle all technical integration and staff training.
+
+Angela: Investment level?
+
+Lisa: $25K monthly for your transaction volume, plus $15K implementation. Given your current fraud losses, ROI is typically achieved in 3-4 months.
+
+Angela: Let's move forward. I'll need contracts for legal review.
