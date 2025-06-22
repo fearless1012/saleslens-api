@@ -1,0 +1,465 @@
+import { LLaMAService } from './llamaServexport class MultimediaTrainingModuleService {
+  private llamaService: LLaMAService;
+  private stableDiffusionService: StableDiffusionService;
+  private barkAudioService: BarkAudioService;
+  private trainingModuleService: TrainingModuleGeneratorService;
+  private multimediaRepository: MultimediaTrainingModuleRepository;
+  private outputDir: string;
+
+  constructor() {
+    this.llamaService = new LLaMAService();
+    this.stableDiffusionService = new StableDiffusionService();
+    this.barkAudioService = new BarkAudioService();
+    this.trainingModuleService = new TrainingModuleGeneratorService();
+    this.multimediaRepository = new MultimediaTrainingModuleRepository();
+    this.outputDir = path.join(process.cwd(), 'multimedia_modules');
+    this.ensureOutputDirectories();
+  }StableDiffusionService } from './stableDiffusionService';
+import { BarkAudioService } from './barkAudioService';
+import { TrainingModuleGeneratorService, TrainingModule, TrainingLesson } from './trainingModuleGeneratorService';
+import MultimediaTrainingModuleRepository from './multimediaTrainingModuleRepository';
+import { IMultimediaTrainingModule } from '../models/multimediaTrainingModule';
+import fs from 'fs/promises';
+import path from 'path';
+
+export interface MultimediaTrainingModule extends TrainingModule {
+  multimedia: {
+    introAudio?: string;
+    conclusionAudio?: string;
+    lessons: Array<{
+      title: string;
+      audioPath?: string;
+      imagePath?: string;
+      videoPaths?: string[];
+      duration: number;
+    }>;
+    totalAudioDuration: number;
+    generationMetadata: {
+      generatedAt: string;
+      llamaModel: string;
+      stableDiffusionModel: string;
+      barkVoicePreset: string;
+      processingTime: number;
+    };
+  };
+}
+
+export interface MediaGenerationOptions {
+  includeImages: boolean;
+  includeAudio: boolean;
+  includeVideos: boolean;
+  voicePreset: string;
+  imageStyle: string;
+  audioQuality: 'fast' | 'standard' | 'high';
+  videoResolution: '720p' | '1080p';
+}
+
+export class MultimediaTrainingModuleService {
+  private llamaService: LLaMAService;
+  private stableDiffusionService: StableDiffusionService;
+  private barkAudioService: BarkAudioService;
+  private trainingModuleService: TrainingModuleGeneratorService;
+  private outputDir: string;
+
+  constructor() {
+    this.llamaService = new LLaMAService();
+    this.stableDiffusionService = new StableDiffusionService();
+    this.barkAudioService = new BarkAudioService();
+    this.trainingModuleService = new TrainingModuleGeneratorService();
+    this.outputDir = path.join(process.cwd(), 'multimedia_modules');
+    this.ensureOutputDirectory();
+  }
+
+  private async ensureOutputDirectory(): Promise<void> {
+    try {
+      await fs.mkdir(this.outputDir, { recursive: true });
+    } catch (error) {
+      console.error('Error creating multimedia output directory:', error);
+    }
+  }
+
+  /**
+   * Generate a complete multimedia training module
+   */
+  async generateMultimediaTrainingModule(
+    domainKnowledge: string,
+    options: MediaGenerationOptions = {
+      includeImages: true,
+      includeAudio: true,
+      includeVideos: false,
+      voicePreset: 'v2/en_speaker_6',
+      imageStyle: 'professional training presentation',
+      audioQuality: 'standard',
+      videoResolution: '1080p'
+    }
+  ): Promise<MultimediaTrainingModule> {
+    const startTime = Date.now();
+    
+    console.log('🚀 Starting multimedia training module generation...');
+    console.log('📊 Options:', JSON.stringify(options, null, 2));
+
+    try {
+      // Step 1: Generate base training module using LLAMA
+      console.log('\n📚 Step 1: Generating training content with LLAMA...');
+      const baseModule = await this.generateBaseModule(domainKnowledge);
+      
+      console.log('✅ Base module generated:');
+      console.log(`   Title: ${baseModule.title}`);
+      console.log(`   Lessons: ${baseModule.lessons.length}`);
+      console.log(`   Difficulty: ${baseModule.difficulty}`);
+      console.log(`   Duration: ${baseModule.estimatedDuration}`);
+
+      // Step 2: Generate images if requested
+      let lessonImages: Array<{ title: string; imagePath: string }> = [];
+      if (options.includeImages) {
+        console.log('\n🎨 Step 2: Generating images with Stable Diffusion...');
+        lessonImages = await this.generateModuleImages(baseModule, options.imageStyle);
+      }
+
+      // Step 3: Generate audio if requested
+      let audioFiles: Array<{ title: string; audioPath: string; duration: number }> = [];
+      let introAudio: string | undefined;
+      let conclusionAudio: string | undefined;
+      
+      if (options.includeAudio) {
+        console.log('\n🎵 Step 3: Generating audio with Bark...');
+        const audioResults = await this.generateModuleAudio(baseModule, options.voicePreset);
+        audioFiles = audioResults.lessons;
+        introAudio = audioResults.intro;
+        conclusionAudio = audioResults.conclusion;
+      }
+
+      // Step 4: Generate videos if requested (placeholder for future implementation)
+      let videoFiles: Array<{ title: string; videoPaths: string[] }> = [];
+      if (options.includeVideos) {
+        console.log('\n🎬 Step 4: Generating videos...');
+        videoFiles = await this.generateModuleVideos(baseModule, lessonImages, options);
+      }
+
+      // Step 5: Combine everything into multimedia module
+      console.log('\n🔗 Step 5: Assembling multimedia training module...');
+      const multimediaModule = await this.assembleMultimediaModule(
+        baseModule,
+        lessonImages,
+        audioFiles,
+        videoFiles,
+        introAudio,
+        conclusionAudio,
+        startTime,
+        options
+      );
+
+      // Step 6: Save the complete module
+      console.log('\n💾 Step 6: Saving multimedia module...');
+      await this.saveMultimediaModule(multimediaModule);
+
+      const processingTime = Date.now() - startTime;
+      console.log(`\n✅ Multimedia training module generation completed in ${processingTime}ms!`);
+      
+      // Print the complete module to console
+      this.printMultimediaModuleToConsole(multimediaModule);
+
+      return multimediaModule;
+
+    } catch (error) {
+      console.error('❌ Error generating multimedia training module:', error);
+      throw error;
+    }
+  }
+
+  private async generateBaseModule(domainKnowledge: string): Promise<TrainingModule> {
+    // Use existing training module generator
+    const prompt = `Create a comprehensive training module based on this domain knowledge:
+
+${domainKnowledge}
+
+Focus on creating:
+1. Clear learning objectives
+2. Well-structured lessons with practical content
+3. Key takeaways for retention
+4. Assessment opportunities
+5. Real-world application scenarios
+
+Make it engaging and suitable for multimedia presentation.`;
+
+    const response = await this.llamaService.generateText(prompt, {
+      systemPrompt: "You are an expert instructional designer creating comprehensive training modules.",
+      maxTokens: 2000,
+      temperature: 0.7
+    });
+
+    try {
+      const cleanedResponse = this.cleanJsonResponse(response);
+      return JSON.parse(cleanedResponse) as TrainingModule;
+    } catch (parseError) {
+      console.error('Error parsing LLAMA response, using fallback structure');
+      return this.createFallbackModule(domainKnowledge);
+    }
+  }
+
+  private async generateModuleImages(
+    module: TrainingModule,
+    imageStyle: string
+  ): Promise<Array<{ title: string; imagePath: string }>> {
+    console.log('🖼️ Generating images for training lessons...');
+
+    const lessonTitles = module.lessons.map(lesson => lesson.title);
+    
+    // Add module title slide
+    const allTitles = [module.title, ...lessonTitles];
+    
+    return await this.stableDiffusionService.generateTrainingImages(allTitles, imageStyle);
+  }
+
+  private async generateModuleAudio(
+    module: TrainingModule,
+    voicePreset: string
+  ): Promise<{
+    lessons: Array<{ title: string; audioPath: string; duration: number }>;
+    intro: string;
+    conclusion: string;
+  }> {
+    console.log('🎙️ Generating audio narration...');
+
+    // Generate lesson audio
+    const lessons = await this.barkAudioService.generateTrainingNarration(
+      module.lessons.map(lesson => ({
+        title: lesson.title,
+        content: lesson.content
+      })),
+      voicePreset
+    );
+
+    // Generate intro and conclusion
+    const { intro, conclusion } = await this.barkAudioService.generateModuleIntroConclusion(
+      module.title,
+      module.objectives,
+      module.keyTakeaways,
+      voicePreset
+    );
+
+    return { lessons, intro, conclusion };
+  }
+
+  private async generateModuleVideos(
+    module: TrainingModule,
+    images: Array<{ title: string; imagePath: string }>,
+    options: MediaGenerationOptions
+  ): Promise<Array<{ title: string; videoPaths: string[] }>> {
+    console.log('🎬 Generating videos (placeholder implementation)...');
+    
+    // This is a placeholder - in a real implementation, you would:
+    // 1. Combine images with audio to create video presentations
+    // 2. Use Stable Video Diffusion for dynamic content
+    // 3. Add animations and transitions
+    
+    return module.lessons.map(lesson => ({
+      title: lesson.title,
+      videoPaths: [`placeholder_video_${lesson.title.replace(/\s+/g, '_').toLowerCase()}.mp4`]
+    }));
+  }
+
+  private async assembleMultimediaModule(
+    baseModule: TrainingModule,
+    images: Array<{ title: string; imagePath: string }>,
+    audioFiles: Array<{ title: string; audioPath: string; duration: number }>,
+    videoFiles: Array<{ title: string; videoPaths: string[] }>,
+    introAudio: string | undefined,
+    conclusionAudio: string | undefined,
+    startTime: number,
+    options: MediaGenerationOptions
+  ): Promise<MultimediaTrainingModule> {
+    
+    const multimediaLessons = baseModule.lessons.map((lesson, index) => {
+      const image = images.find(img => img.title === lesson.title);
+      const audio = audioFiles.find(aud => aud.title === lesson.title);
+      const video = videoFiles.find(vid => vid.title === lesson.title);
+
+      return {
+        title: lesson.title,
+        audioPath: audio?.audioPath,
+        imagePath: image?.imagePath,
+        videoPaths: video?.videoPaths,
+        duration: audio?.duration || 120 // default 2 minutes if no audio
+      };
+    });
+
+    const totalAudioDuration = audioFiles.reduce((total, audio) => total + audio.duration, 0);
+    const processingTime = Date.now() - startTime;
+
+    return {
+      ...baseModule,
+      multimedia: {
+        introAudio,
+        conclusionAudio,
+        lessons: multimediaLessons,
+        totalAudioDuration,
+        generationMetadata: {
+          generatedAt: new Date().toISOString(),
+          llamaModel: 'Llama-4-Maverick-17B-128E-Instruct-FP8',
+          stableDiffusionModel: 'runwayml/stable-diffusion-v1-5',
+          barkVoicePreset: options.voicePreset,
+          processingTime
+        }
+      }
+    };
+  }
+
+  private async saveMultimediaModule(module: MultimediaTrainingModule): Promise<void> {
+    const moduleDir = path.join(this.outputDir, `${module.title.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`);
+    await fs.mkdir(moduleDir, { recursive: true });
+
+    // Save module metadata
+    const moduleMetadataPath = path.join(moduleDir, 'module.json');
+    await fs.writeFile(moduleMetadataPath, JSON.stringify(module, null, 2));
+
+    console.log('💾 Module saved to:', moduleDir);
+  }
+
+  private printMultimediaModuleToConsole(module: MultimediaTrainingModule): void {
+    console.log('\n' + '='.repeat(100));
+    console.log('🎓 MULTIMEDIA TRAINING MODULE - COMPLETE PACKAGE');
+    console.log('='.repeat(100));
+    
+    console.log(`\n📚 Module Title: ${module.title.toUpperCase()}`);
+    console.log('='.repeat(100));
+    
+    console.log(`\n📖 Description: ${module.description}`);
+    console.log(`⏱️  Estimated Duration: ${module.estimatedDuration}`);
+    console.log(`📊 Difficulty Level: ${module.difficulty}`);
+    console.log(`🎵 Total Audio Duration: ${Math.floor(module.multimedia.totalAudioDuration / 60)} minutes ${module.multimedia.totalAudioDuration % 60} seconds`);
+    
+    console.log('\n🎯 Learning Objectives:');
+    module.objectives.forEach((objective, index) => {
+      console.log(`   ${index + 1}. ${objective}`);
+    });
+    
+    console.log('\n🔑 Key Takeaways:');
+    module.keyTakeaways.forEach((takeaway, index) => {
+      console.log(`   ${index + 1}. ${takeaway}`);
+    });
+
+    if (module.multimedia.introAudio) {
+      console.log(`\n🎬 Introduction Audio: ${module.multimedia.introAudio}`);
+    }
+
+    console.log(`\n📋 Lessons (${module.lessons.length} total):`);
+    console.log('='.repeat(100));
+
+    module.lessons.forEach((lesson, index) => {
+      const multimedia = module.multimedia.lessons[index];
+      
+      console.log(`\n   Lesson ${index + 1}: ${lesson.title}`);
+      console.log(`   Type: ${lesson.type} | Duration: ${lesson.duration}`);
+      console.log(`   Content: ${lesson.content.substring(0, 200)}...`);
+      
+      if (multimedia.imagePath) {
+        console.log(`   🖼️  Image: ${multimedia.imagePath}`);
+      }
+      
+      if (multimedia.audioPath) {
+        console.log(`   🎵 Audio: ${multimedia.audioPath} (${multimedia.duration}s)`);
+      }
+      
+      if (multimedia.videoPaths && multimedia.videoPaths.length > 0) {
+        console.log(`   🎬 Videos: ${multimedia.videoPaths.join(', ')}`);
+      }
+      
+      if (lesson.resources && lesson.resources.length > 0) {
+        console.log(`   📚 Resources: ${lesson.resources.join(', ')}`);
+      }
+    });
+
+    if (module.multimedia.conclusionAudio) {
+      console.log(`\n🎬 Conclusion Audio: ${module.multimedia.conclusionAudio}`);
+    }
+
+    console.log('\n📊 Generation Metadata:');
+    console.log('='.repeat(100));
+    console.log(`   Generated At: ${module.multimedia.generationMetadata.generatedAt}`);
+    console.log(`   LLAMA Model: ${module.multimedia.generationMetadata.llamaModel}`);
+    console.log(`   Stable Diffusion Model: ${module.multimedia.generationMetadata.stableDiffusionModel}`);
+    console.log(`   Bark Voice Preset: ${module.multimedia.generationMetadata.barkVoicePreset}`);
+    console.log(`   Processing Time: ${module.multimedia.generationMetadata.processingTime}ms`);
+
+    console.log('\n' + '='.repeat(100));
+    console.log('✅ MULTIMEDIA TRAINING MODULE GENERATION COMPLETE!');
+    console.log('='.repeat(100));
+  }
+
+  private cleanJsonResponse(response: string): string {
+    // Remove any markdown code blocks
+    response = response.replace(/```json\s*|\s*```/g, '');
+    
+    // Find JSON-like content
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      return jsonMatch[0];
+    }
+    
+    return response.trim();
+  }
+
+  private createFallbackModule(domainKnowledge: string): TrainingModule {
+    return {
+      title: "AI-Generated Training Module",
+      description: "Comprehensive training based on provided domain knowledge",
+      estimatedDuration: "4 hours",
+      difficulty: "intermediate" as const,
+      objectives: [
+        "Understand key concepts from the domain knowledge",
+        "Apply learned principles in practical scenarios",
+        "Demonstrate mastery through assessments"
+      ],
+      keyTakeaways: [
+        "Core principles are essential for success",
+        "Practical application reinforces learning",
+        "Continuous improvement is key"
+      ],
+      lessons: [
+        {
+          title: "Introduction to Key Concepts",
+          content: domainKnowledge.substring(0, 500) + "...",
+          duration: "45 minutes",
+          type: "theory" as const,
+          resources: ["Reference Material", "Additional Reading"]
+        },
+        {
+          title: "Practical Application",
+          content: "Apply the concepts learned in real-world scenarios...",
+          duration: "60 minutes", 
+          type: "practical" as const,
+          resources: ["Hands-on Exercises", "Case Studies"]
+        },
+        {
+          title: "Assessment and Review",
+          content: "Test your understanding and review key concepts...",
+          duration: "30 minutes",
+          type: "assessment" as const,
+          resources: ["Quiz", "Review Materials"]
+        }
+      ]
+    };
+  }
+
+  /**
+   * Get available voice options for audio generation
+   */
+  getAvailableVoices(): string[] {
+    return this.barkAudioService.getAvailableVoices();
+  }
+
+  /**
+   * Clean up old multimedia files
+   */
+  async cleanupOldFiles(olderThanHours: number = 24): Promise<void> {
+    console.log('🧹 Cleaning up old multimedia files...');
+    
+    await Promise.all([
+      this.stableDiffusionService.cleanupOldFiles(olderThanHours),
+      this.barkAudioService.cleanupOldFiles(olderThanHours)
+    ]);
+
+    console.log('✅ Cleanup completed!');
+  }
+}

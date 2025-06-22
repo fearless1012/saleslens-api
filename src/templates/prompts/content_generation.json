@@ -1,0 +1,15 @@
+{
+  "name": "content_generation",
+  "description": "Generate new content based on existing materials",
+  "category": "generation",
+  "systemPrompt": "You are a creative content strategist and copywriter specializing in sales and marketing materials. You excel at creating compelling, persuasive content that drives engagement and conversions.",
+  "userPrompt": "Based on the following source material, generate new content:\n\n**Source Material:**\n{% if file %}\n- Document: {{ file.title }}\n- Content: {{ file.content | truncate(1500) }}\n{% endif %}\n\n{% if pitch %}\n**Pitch Context:**\n- Industry: {{ pitch.industry }}\n- Category: {{ pitch.category }}\n- Target Success Rate: {{ pitch.successRate }}%\n{% endif %}\n\n**Content Generation Request:**\n{{ customVariables.contentType if customVariables.contentType else 'Please specify the type of content to generate' }}\n\n**Requirements:**\n1. **Target Audience**: {{ customVariables.targetAudience if customVariables.targetAudience else 'Business professionals' }}\n2. **Tone**: {{ customVariables.tone if customVariables.tone else 'Professional and persuasive' }}\n3. **Length**: {{ customVariables.length if customVariables.length else 'Medium (300-500 words)' }}\n4. **Key Messages**: Focus on value proposition and benefits\n5. **Call-to-Action**: Include a clear, compelling CTA\n\nGenerate high-quality content that aligns with the source material and meets the specified requirements.",
+  "variables": [
+    "file",
+    "pitch",
+    "customVariables"
+  ],
+  "model": "llama-3.3-70b-instruct",
+  "maxTokens": 1200,
+  "temperature": 0.7
+}

@@ -1,0 +1,72 @@
+{
+  "title": "AI-Generated Training Module",
+  "description": "Comprehensive training based on provided domain knowledge",
+  "estimatedDuration": "4 hours",
+  "difficulty": "intermediate",
+  "objectives": [
+    "Understand key concepts from the domain knowledge",
+    "Apply learned principles in practical scenarios",
+    "Demonstrate mastery through assessments"
+  ],
+  "keyTakeaways": [
+    "Core principles are essential for success",
+    "Practical application reinforces learning",
+    "Continuous improvement is key"
+  ],
+  "lessons": [
+    {
+      "title": "Introduction to Key Concepts",
+      "content": "\nQuick Test Training Module:\n\nThis is a simple test to verify the multimedia training system works correctly.\n\nKey Points:\n1. System integration between LLAMA, Stable Diffusion, and Bark\n2. Content generation and media creation pipeline\n3. Output formatting and console display\n\nThis test should complete quickly and show the full multimedia module structure.\n...",
+      "duration": "45 minutes",
+      "type": "theory",
+      "resources": [
+        "Reference Material",
+        "Additional Reading"
+      ]
+    },
+    {
+      "title": "Practical Application",
+      "content": "Apply the concepts learned in real-world scenarios...",
+      "duration": "60 minutes",
+      "type": "practical",
+      "resources": [
+        "Hands-on Exercises",
+        "Case Studies"
+      ]
+    },
+    {
+      "title": "Assessment and Review",
+      "content": "Test your understanding and review key concepts...",
+      "duration": "30 minutes",
+      "type": "assessment",
+      "resources": [
+        "Quiz",
+        "Review Materials"
+      ]
+    }
+  ],
+  "multimedia": {
+    "lessons": [
+      {
+        "title": "Introduction to Key Concepts",
+        "duration": 120
+      },
+      {
+        "title": "Practical Application",
+        "duration": 120
+      },
+      {
+        "title": "Assessment and Review",
+        "duration": 120
+      }
+    ],
+    "totalAudioDuration": 0,
+    "generationMetadata": {
+      "generatedAt": "2025-06-22T10:17:50.260Z",
+      "llamaModel": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "stableDiffusionModel": "runwayml/stable-diffusion-v1-5",
+      "barkVoicePreset": "v2/en_speaker_6",
+      "processingTime": 4793
+    }
+  }
+}

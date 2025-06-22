@@ -1,0 +1,80 @@
+{
+  "title": "AI-Generated Training Module",
+  "description": "Comprehensive training based on provided domain knowledge",
+  "estimatedDuration": "4 hours",
+  "difficulty": "intermediate",
+  "objectives": [
+    "Understand key concepts from the domain knowledge",
+    "Apply learned principles in practical scenarios",
+    "Demonstrate mastery through assessments"
+  ],
+  "keyTakeaways": [
+    "Core principles are essential for success",
+    "Practical application reinforces learning",
+    "Continuous improvement is key"
+  ],
+  "lessons": [
+    {
+      "title": "Introduction to Key Concepts",
+      "content": "\nMeta Ads Training Module - Advanced Targeting Strategies\n\nOverview:\nMeta Ads offers sophisticated targeting capabilities that help businesses reach their ideal customers across Facebook, Instagram, and other Meta platforms.\n\nKey Learning Areas:\n\n1. Demographic Targeting\n   - Age, gender, location-based targeting\n   - Income and education level considerations\n   - Life event targeting (recently moved, new relationship, etc.)\n\n2. Interest-Based Targeting\n   - Using Facebook's interest categories\n...",
+      "duration": "45 minutes",
+      "type": "theory",
+      "resources": [
+        "Reference Material",
+        "Additional Reading"
+      ]
+    },
+    {
+      "title": "Practical Application",
+      "content": "Apply the concepts learned in real-world scenarios...",
+      "duration": "60 minutes",
+      "type": "practical",
+      "resources": [
+        "Hands-on Exercises",
+        "Case Studies"
+      ]
+    },
+    {
+      "title": "Assessment and Review",
+      "content": "Test your understanding and review key concepts...",
+      "duration": "30 minutes",
+      "type": "assessment",
+      "resources": [
+        "Quiz",
+        "Review Materials"
+      ]
+    }
+  ],
+  "multimedia": {
+    "introAudio": "/Applications/LLamaHack/saleslens-api/media_output/audio/placeholder_audio_1750588590712.txt",
+    "conclusionAudio": "/Applications/LLamaHack/saleslens-api/media_output/audio/placeholder_audio_1750588590775.txt",
+    "lessons": [
+      {
+        "title": "Introduction to Key Concepts",
+        "audioPath": "/Applications/LLamaHack/saleslens-api/media_output/audio/placeholder_audio_1750588584413.txt",
+        "imagePath": "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750588581090.txt",
+        "duration": 36
+      },
+      {
+        "title": "Practical Application",
+        "audioPath": "/Applications/LLamaHack/saleslens-api/media_output/audio/placeholder_audio_1750588586520.txt",
+        "imagePath": "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750588582197.txt",
+        "duration": 11
+      },
+      {
+        "title": "Assessment and Review",
+        "audioPath": "/Applications/LLamaHack/saleslens-api/media_output/audio/placeholder_audio_1750588588613.txt",
+        "imagePath": "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750588583313.txt",
+        "duration": 12
+      }
+    ],
+    "totalAudioDuration": 59,
+    "generationMetadata": {
+      "generatedAt": "2025-06-22T10:36:30.776Z",
+      "llamaModel": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "stableDiffusionModel": "runwayml/stable-diffusion-v1-5",
+      "barkVoicePreset": "v2/en_speaker_1",
+      "processingTime": 18000
+    }
+  }
+}

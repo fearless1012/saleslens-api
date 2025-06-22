@@ -1,0 +1,14 @@
+{
+  "name": "knowledge_extraction",
+  "description": "Extract structured knowledge from domain knowledge documents",
+  "category": "extraction",
+  "systemPrompt": "You are a knowledge management expert skilled at extracting and structuring information from business documents into actionable knowledge bases.",
+  "userPrompt": "Extract structured knowledge from this domain knowledge document:\n\n**Document Information:**\n- Title: {{ file.title }}\n- Category: {{ domainKnowledge.category if domainKnowledge else 'N/A' }}\n- File: {{ file.fileName }}\n\n**Content:**\n{{ file.content }}\n\n**Extraction Requirements:**\n1. **Core Concepts**: List the main concepts or topics covered\n2. **Key Facts**: Extract important facts, figures, or data points\n3. **Processes/Procedures**: Identify any workflows, processes, or procedures\n4. **Best Practices**: Extract recommended practices or guidelines\n5. **Definitions**: List important terms and their definitions\n6. **References**: Note any external references, links, or citations\n7. **Applications**: How this knowledge can be applied in practice\n\nPresent the extracted knowledge in a structured, searchable format that can be easily referenced by the sales team.",
+  "variables": [
+    "file",
+    "domainKnowledge"
+  ],
+  "model": "llama-3.3-70b-instruct",
+  "maxTokens": 1000,
+  "temperature": 0.1
+}

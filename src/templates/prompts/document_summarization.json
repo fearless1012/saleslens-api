@@ -1,0 +1,13 @@
+{
+  "name": "document_summarization",
+  "description": "Create a comprehensive summary of any uploaded document",
+  "category": "summarization",
+  "systemPrompt": "You are an expert document analyst capable of creating clear, concise, and comprehensive summaries of business documents.",
+  "userPrompt": "Please create a summary of this document:\n\n**Document Details:**\n- Title: {{ file.title }}\n- File: {{ file.fileName }}\n- Type: {{ file.fileType }}\n- Size: {{ file.fileSize | filesize }}\n\n**Content:**\n{{ file.content }}\n\n**Summary Requirements:**\n1. **Executive Summary**: 2-3 sentence overview\n2. **Key Points**: 5-7 main points from the document\n3. **Important Details**: Critical information that shouldn't be missed\n4. **Action Items**: Any tasks, deadlines, or next steps mentioned\n5. **Keywords**: {{ file.content | keywords(10) | join(', ') }}\n\nPlease provide a clear, structured summary that captures the essence and important details of this document.",
+  "variables": [
+    "file"
+  ],
+  "model": "llama-3.3-70b-instruct",
+  "maxTokens": 800,
+  "temperature": 0.2
+}

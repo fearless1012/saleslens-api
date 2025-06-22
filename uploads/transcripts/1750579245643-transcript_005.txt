@@ -1,0 +1,29 @@
+Date: 2024-05-10
+Customer: Lisa Park, CFO at FinanceFirst Credit Union
+Sales Rep: Michael Torres
+Product: Llama 4 AI Model - Fraud Detection System
+Call Result: Successful Sale
+Context: Credit union experiencing increasing fraud losses and needs better detection capabilities.
+
+Transcript:
+Michael: Lisa, thanks for making time. I know FinanceFirst has been dealing with increased fraud attempts lately.
+
+Lisa: Unfortunately, yes. Our fraud losses increased 40% last year. Our current system catches obvious patterns but misses sophisticated attacks.
+
+Michael: That's exactly what Llama 4's fraud detection addresses. It uses advanced pattern recognition to identify subtle anomalies that traditional rules-based systems miss. Community banks typically see 60-80% reduction in fraud losses.
+
+Lisa: That would be significant for us. But false positives are also costly - we can't block legitimate transactions.
+
+Michael: Absolutely. Our system actually reduces false positives by 50% compared to traditional systems. It learns your customers' normal behavior patterns and only flags truly suspicious activity.
+
+Lisa: What about implementation? We can't have system downtime.
+
+Michael: The implementation is seamless. We run parallel to your existing system for 30 days, then gradually transition. Zero downtime, and your team sees real-time comparisons of detection rates.
+
+Lisa: This sounds promising. What about ongoing support and model updates?
+
+Michael: We provide 24/7 monitoring and monthly model updates as fraud patterns evolve. Think of it as having a team of fraud experts working around the clock.
+
+Lisa: I'd like to see a demo with our actual transaction data. Can we arrange that?
+
+Michael: Absolutely. I'll coordinate with your IT team for a secure data demo next week.

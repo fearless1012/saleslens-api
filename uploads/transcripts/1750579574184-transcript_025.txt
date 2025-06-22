@@ -1,0 +1,31 @@
+Date: 2024-03-31
+Customer: Daniel Cooper, Supply Chain Director at GlobalTech Electronics
+Sales Rep: Ashley Martinez
+Product: Llama 4 AI Model - Supply Chain Optimization & Risk Management
+Call Result: Lost Sale - Timing Issues
+Context: GlobalTech manufactures consumer electronics and faces supply chain disruptions and component shortages.
+
+Transcript:
+Ashley: Daniel, thank you for meeting with me. I know GlobalTech has been navigating significant supply chain challenges in the electronics industry.
+
+Daniel: That's an understatement. Chip shortages, shipping delays, geopolitical tensions - our supply chain is constantly disrupted. We need better visibility and risk management.
+
+Ashley: Llama 4's supply chain optimizer analyzes supplier performance, geopolitical risks, weather patterns, and market conditions to predict disruptions weeks in advance. Electronics manufacturers typically reduce supply interruptions by 40% and cut inventory costs by 25%.
+
+Daniel: How does it handle the complexity of electronics supply chains? We have thousands of components from hundreds of suppliers across dozens of countries.
+
+Ashley: The AI maps your entire supply network, identifies critical path dependencies, and suggests alternative suppliers before disruptions occur. It even considers secondary and tertiary supplier risks.
+
+Daniel: What about real-time monitoring and alerts?
+
+Ashley: Continuous monitoring with instant alerts for potential disruptions. The system recommends specific actions like increasing orders from alternative suppliers or adjusting production schedules.
+
+Daniel: This sounds exactly like what we need, but timing is challenging. We're in the middle of a major ERP system upgrade that won't be complete until Q1 next year.
+
+Ashley: I understand. Supply chain integration does require stable systems. Would you consider a limited pilot with one product line using existing data feeds?
+
+Daniel: Not really. Any new systems need to wait until our ERP stabilization is complete. The risk of disrupting current operations is too high.
+
+Ashley: Completely understandable. May I follow up in Q2 2025 once your ERP implementation is stable?
+
+Daniel: Yes, definitely. This conversation has been valuable, and I'd like to revisit this once we're through our current transition.

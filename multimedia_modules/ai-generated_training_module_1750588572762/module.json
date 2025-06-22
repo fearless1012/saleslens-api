@@ -1,0 +1,72 @@
+{
+  "title": "AI-Generated Training Module",
+  "description": "Comprehensive training based on provided domain knowledge",
+  "estimatedDuration": "4 hours",
+  "difficulty": "intermediate",
+  "objectives": [
+    "Understand key concepts from the domain knowledge",
+    "Apply learned principles in practical scenarios",
+    "Demonstrate mastery through assessments"
+  ],
+  "keyTakeaways": [
+    "Core principles are essential for success",
+    "Practical application reinforces learning",
+    "Continuous improvement is key"
+  ],
+  "lessons": [
+    {
+      "title": "Introduction to Key Concepts",
+      "content": "\nMeta Ads Training Module - Advanced Targeting Strategies\n\nOverview:\nMeta Ads offers sophisticated targeting capabilities that help businesses reach their ideal customers across Facebook, Instagram, and other Meta platforms.\n\nKey Learning Areas:\n\n1. Demographic Targeting\n   - Age, gender, location-based targeting\n   - Income and education level considerations\n   - Life event targeting (recently moved, new relationship, etc.)\n\n2. Interest-Based Targeting\n   - Using Facebook's interest categories\n...",
+      "duration": "45 minutes",
+      "type": "theory",
+      "resources": [
+        "Reference Material",
+        "Additional Reading"
+      ]
+    },
+    {
+      "title": "Practical Application",
+      "content": "Apply the concepts learned in real-world scenarios...",
+      "duration": "60 minutes",
+      "type": "practical",
+      "resources": [
+        "Hands-on Exercises",
+        "Case Studies"
+      ]
+    },
+    {
+      "title": "Assessment and Review",
+      "content": "Test your understanding and review key concepts...",
+      "duration": "30 minutes",
+      "type": "assessment",
+      "resources": [
+        "Quiz",
+        "Review Materials"
+      ]
+    }
+  ],
+  "multimedia": {
+    "lessons": [
+      {
+        "title": "Introduction to Key Concepts",
+        "duration": 120
+      },
+      {
+        "title": "Practical Application",
+        "duration": 120
+      },
+      {
+        "title": "Assessment and Review",
+        "duration": 120
+      }
+    ],
+    "totalAudioDuration": 0,
+    "generationMetadata": {
+      "generatedAt": "2025-06-22T10:36:12.761Z",
+      "llamaModel": "Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "stableDiffusionModel": "runwayml/stable-diffusion-v1-5",
+      "barkVoicePreset": "v2/en_speaker_6",
+      "processingTime": 7330
+    }
+  }
+}

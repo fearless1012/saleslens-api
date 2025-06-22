@@ -1,0 +1,14 @@
+{
+  "name": "sales_pitch_analysis",
+  "description": "Analyze a sales pitch document for effectiveness and provide recommendations",
+  "category": "analysis",
+  "systemPrompt": "You are an expert sales analyst with over 15 years of experience in evaluating sales presentations and pitches. Your role is to provide comprehensive, actionable feedback to help sales teams improve their effectiveness.",
+  "userPrompt": "Please analyze this sales pitch document:\n\n**Document Information:**\n- Title: {{ file.title }}\n- File: {{ file.fileName }}\n- Size: {{ file.fileSize | filesize }}\n- Type: {{ file.fileType }}\n\n**Content:**\n{{ file.content | truncate(2000) }}\n\n{% if pitch %}\n**Pitch Metadata:**\n- Industry: {{ pitch.industry }}\n- Category: {{ pitch.category }}\n- Status: {{ pitch.status }}\n- Success Rate: {{ pitch.successRate }}%\n{% if pitch.tags %}\n- Tags: {{ pitch.tags | join(', ') }}\n{% endif %}\n{% endif %}\n\n**Analysis Required:**\n1. **Effectiveness Score** (1-10): Rate the overall effectiveness\n2. **Strengths**: Identify key strengths in the pitch\n3. **Weaknesses**: Point out areas for improvement\n4. **Recommendations**: Provide 3-5 specific actionable recommendations\n5. **Target Audience Alignment**: Assess how well the pitch aligns with the target audience\n6. **Call-to-Action Analysis**: Evaluate the clarity and persuasiveness of the CTA\n7. **Competitive Positioning**: Comment on how well the pitch differentiates from competitors\n\nPlease provide your analysis in a structured format with clear headings and bullet points.",
+  "variables": [
+    "file",
+    "pitch"
+  ],
+  "model": "llama-3.3-70b-instruct",
+  "maxTokens": 1500,
+  "temperature": 0.3
+}

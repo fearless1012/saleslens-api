@@ -1,0 +1,26 @@
+Placeholder Audio
+
+Text: Welcome to the lesson on Introduction to Key Concepts.
+
+
+Meta Ads Training Module - Advanced Targeting Strategies
+
+Overview:
+Meta Ads offers sophisticated targeting capabilities that help businesses reach their ideal customers across Facebook, Instagram, and other Meta platforms.
+
+Key Learning Areas:
+
+1. Demographic Targeting
+   - Age, gender, location-based targeting
+   - Income and education level considerations
+   - Life event targeting (recently moved, new relationship, etc.)
+
+2. Interest-Based Targeting
+   - Using Facebook's interest categories
+...
+
+This concludes our lesson on Introduction to Key Concepts. Let's move on to the next topic.
+
+Generated at: 2025-06-22T10:36:24.413Z
+
+This would be converted to speech using Bark.

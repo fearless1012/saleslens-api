@@ -1,0 +1,29 @@
+Date: 2024-03-24
+Customer: Dr. Steven Roberts, Chief Medical Officer at CityWide Medical Group
+Sales Rep: Amanda Garcia
+Product: Llama 4 AI Model - Clinical Decision Support & Diagnosis Assistant
+Call Result: Lost Sale - Regulatory Concerns
+Context: CityWide operates 15 clinics and wants to improve diagnostic accuracy and reduce physician workload.
+
+Transcript:
+Amanda: Dr. Roberts, thank you for your time. I understand CityWide is looking for ways to support physicians with diagnostic decisions and reduce administrative burden.
+
+Dr. Roberts: Yes, our physicians are overwhelmed. We're seeing 20% more patients than last year but can't find enough qualified doctors. Diagnostic errors are also a concern.
+
+Amanda: Llama 4's clinical assistant analyzes patient symptoms, medical history, lab results, and imaging to suggest differential diagnoses and treatment protocols. Medical groups report 25% improvement in diagnostic accuracy and 30% reduction in physician time per case.
+
+Dr. Roberts: How does it handle liability issues? If the AI suggests an incorrect diagnosis, who's responsible?
+
+Amanda: The system is designed as decision support, not replacement. Final decisions always remain with the physician. We carry professional liability insurance and provide legal framework documentation.
+
+Dr. Roberts: What about FDA approval and HIPAA compliance?
+
+Amanda: We're HIPAA compliant and working toward FDA approval for specific diagnostic modules. Currently, we operate under the clinical decision support exemption.
+
+Dr. Roberts: That's concerning. Without full FDA approval, our malpractice insurance might not cover AI-assisted decisions.
+
+Amanda: I understand the concern. Many medical groups are using clinical decision support tools, but I respect your cautious approach.
+
+Dr. Roberts: We'll need to wait for full regulatory approval before considering this. The risk is too high for our organization right now.
+
+Amanda: I completely understand. May I keep you updated on our regulatory progress? We expect FDA clearance within 12-18 months.

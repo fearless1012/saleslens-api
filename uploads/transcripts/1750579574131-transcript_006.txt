@@ -1,0 +1,25 @@
+Date: 2024-03-08
+Customer: Robert Chen, Head of HR at GlobalTech Industries
+Sales Rep: Jessica Williams
+Product: Llama 4 AI Model - Recruitment Analytics
+Call Result: Failed Sale
+Context: HR department is overwhelmed but concerned about bias in AI hiring tools.
+
+Transcript:
+Jessica: Robert, I understand GlobalTech is struggling to scale your hiring process effectively?
+
+Robert: Yes, we're hiring 200+ people this quarter, but our current process is manual and time-consuming. However, I have serious concerns about AI in hiring.
+
+Jessica: I appreciate your caution. Bias in hiring AI is a real issue. Llama 4 is specifically designed with fairness algorithms and bias detection. We actually help reduce human bias in the process.
+
+Robert: That's what every AI vendor says. But we've seen headlines about discriminatory algorithms. Our legal team is very nervous about this.
+
+Jessica: Completely understandable. We provide full transparency - you can see exactly why the AI made each recommendation. Plus, we offer bias audits and comply with all EEOC guidelines.
+
+Robert: The technology might be sound, but the optics are challenging. If there's any hint of discrimination, it could be a PR nightmare. Our CEO is very risk-averse on this topic.
+
+Jessica: What if we focused only on initial resume screening to save your team time, with all final decisions remaining human-driven?
+
+Robert: Even that feels risky. I think we need to stick with our current process for now. Maybe in a few years when AI hiring is more accepted, but not today.
+
+Jessica: I understand completely. Your caution is actually admirable in this space.

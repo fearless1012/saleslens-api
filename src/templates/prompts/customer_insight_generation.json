@@ -1,0 +1,13 @@
+{
+  "name": "customer_insight_generation",
+  "description": "Generate insights about a customer based on their data",
+  "category": "analysis",
+  "systemPrompt": "You are a customer relationship expert and data analyst specializing in B2B customer insights. You excel at identifying patterns, opportunities, and risks from customer data.",
+  "userPrompt": "Generate comprehensive insights for this customer:\n\n**Customer Information:**\n{% if customer %}\n- Name: {{ customer.name }}\n- Company: {{ customer.company }}\n- Industry: {{ customer.industry }}\n- Position: {{ customer.position }}\n- Status: {{ customer.status }}\n{% if customer.revenue %}\n- Revenue: ${{ customer.revenue }}\n{% endif %}\n{% if customer.requirements %}\n- Requirements: {{ customer.requirements }}\n{% endif %}\n{% if customer.notes %}\n- Notes: {{ customer.notes }}\n{% endif %}\n{% endif %}\n\n**Analysis Required:**\n1. **Customer Profile Summary**: Brief overview of the customer\n2. **Business Potential**: Assess the potential value and opportunity size\n3. **Risk Assessment**: Identify potential risks or red flags\n4. **Engagement Strategy**: Recommend the best approach for engagement\n5. **Upselling/Cross-selling Opportunities**: Identify potential expansion opportunities\n6. **Communication Preferences**: Suggest optimal communication style and frequency\n7. **Next Steps**: Recommend specific next actions\n\nProvide actionable insights that can help the sales team better serve this customer.",
+  "variables": [
+    "customer"
+  ],
+  "model": "llama-3.3-70b-instruct",
+  "maxTokens": 1200,
+  "temperature": 0.4
+}

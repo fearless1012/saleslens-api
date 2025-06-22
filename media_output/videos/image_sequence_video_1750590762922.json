@@ -1,0 +1,16 @@
+{
+  "type": "image_sequence_video",
+  "images": [
+    "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750590762738.txt",
+    "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750590762824.txt",
+    "/Applications/LLamaHack/saleslens-api/media_output/images/placeholder_1750590762922.txt"
+  ],
+  "metadata": {
+    "generatedAt": "2025-06-22T11:12:42.922Z",
+    "prompt": "Professional training presentation about Meta AI technology",
+    "imageCount": 3,
+    "suggestedDuration": 9,
+    "format": "image_sequence",
+    "description": "Series of images representing video content"
+  }
+}

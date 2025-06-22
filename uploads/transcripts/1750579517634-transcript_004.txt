@@ -1,0 +1,25 @@
+Date: 2024-01-30
+Customer: Kevin Walsh, Director of Marketing at TrendCorp
+Sales Rep: Emma Foster
+Product: Llama 4 AI Model - Content Generation Platform
+Call Result: Failed Sale
+Context: TrendCorp's marketing team is protective of creative control and skeptical of AI-generated content.
+
+Transcript:
+Emma: Hi Kevin, I'm reaching out because I know TrendCorp produces a lot of marketing content. Our AI can help scale your content creation significantly.
+
+Kevin: Emma, I'll be honest - our creative team is already nervous about AI replacing human creativity. They're pretty resistant to the idea.
+
+Emma: I understand that concern. Llama 4 isn't meant to replace creativity, but to enhance it. Think of it as a smart writing assistant that helps with first drafts, headlines, and variations.
+
+Kevin: But our brand voice is very specific. We've spent years developing it. How can AI capture that nuance?
+
+Emma: Great point. We train the model on your existing content to learn your brand voice, tone, and style. It becomes an extension of your team, not a replacement.
+
+Kevin: That's interesting, but my team is already producing good work. I'm not sure they'd embrace this, and I can't force a tool on unwilling creatives.
+
+Emma: What if we started with just data-driven tasks like A/B testing different headlines or social media variations?
+
+Kevin: Look Emma, the technology might be impressive, but change management is my bigger challenge. My team needs to buy in, and right now they see AI as a threat, not a tool.
+
+Emma: I completely understand. Team adoption is crucial for success.

@@ -1,0 +1,29 @@
+Date: 2024-03-17
+Customer: Roberto Silva, Operations Manager at BuildCorp Construction
+Sales Rep: Marcus Johnson
+Product: Llama 4 AI Model - Project Risk Assessment
+Call Result: Successful Sale
+Context: BuildCorp has been experiencing cost overruns and project delays on major construction projects.
+
+Transcript:
+Marcus: Roberto, I appreciate you taking the call. I understand BuildCorp has been dealing with some challenging project overruns lately.
+
+Roberto: Yes, we've had three major projects go over budget by 20-30% this year. Weather delays, supply chain issues, labor problems - it's becoming unpredictable.
+
+Marcus: That's exactly what Llama 4's risk assessment module addresses. It analyzes historical project data, weather patterns, supplier reliability, and market conditions to predict risks before they impact your timeline.
+
+Roberto: How accurate are these predictions?
+
+Marcus: Our construction clients see 85% accuracy in risk prediction and average 18% reduction in project delays. The AI flags potential issues 2-3 weeks in advance, giving you time to adjust.
+
+Roberto: What about integration with our project management systems?
+
+Marcus: We integrate seamlessly with most major platforms - Microsoft Project, Procore, Autodesk. Implementation takes about 4 weeks.
+
+Roberto: Pricing?
+
+Marcus: For your project volume, $8K monthly. Most clients save that amount on just one prevented delay.
+
+Roberto: That's reasonable. Can we start with a trial on our upcoming downtown office project?
+
+Marcus: Absolutely. I'll prepare a customized proposal for that specific project.

@@ -1,0 +1,23 @@
+Date: 2024-02-08
+Customer: Marcus Johnson, VP Operations at LogiFlow
+Sales Rep: Sarah Chen
+Product: Llama 4 AI Model - Supply Chain Optimization
+Call Result: Failed Sale
+Context: LogiFlow just implemented a competing solution and has budget constraints.
+
+Transcript:
+Sarah: Hi Marcus, I'm calling about optimizing LogiFlow's supply chain operations with our AI solution.
+
+Marcus: Sarah, I appreciate the call, but we just went live with Oracle's supply chain platform last month. The implementation was... challenging.
+
+Sarah: I understand. However, Llama 4 can actually integrate with Oracle and enhance its capabilities. We've seen companies reduce inventory costs by 15-20% while improving delivery times.
+
+Marcus: That sounds interesting, but honestly, we're still dealing with integration issues. My team is overwhelmed, and the CFO has put a freeze on new tech spending for at least six months.
+
+Sarah: I completely understand. What if we could show measurable ROI within the first month? We offer a pilot program with no upfront costs.
+
+Marcus: Look, Sarah, the technology might be great, but timing is everything. My team can't handle another implementation right now. Maybe reach out again in Q3 when things settle down.
+
+Sarah: Of course, I'll make a note to follow up in September. In the meantime, I'll send some case studies showing Oracle integrations.
+
+Marcus: That would be helpful. Thanks for understanding our situation.
