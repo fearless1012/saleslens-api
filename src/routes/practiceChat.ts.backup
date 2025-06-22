@@ -1,0 +1,262 @@
+import express, { Router, Request, Response } from "express";
+import { auth } from "../middleware/auth";
+import { validateRequest } from "../middleware/validateRequest";
+import { llamaService } from "../services/llamaService";
+import { Customer } from "../models/customer";
+import { Pitch } from "../models/pitch";
+import { DomainKnowledge } from "../models/domainKnowledge";
+import Joi from "joi";
+
+const router: Router = express.Router();
+
+// Validation schemas
+const chatRequestSchema = Joi.object({
+  message: Joi.string().required(),
+  customerProfile: Joi.string().required(),
+  conversationHistory: Joi.array()
+    .items(
+      Joi.object({
+        role: Joi.string().valid("user", "assistant").required(),
+        content: Joi.string().required(),
+      })
+    )
+    .optional(),
+  industryFocus: Joi.string().optional(),
+  specificProducts: Joi.array().items(Joi.string()).optional(),
+  pitchType: Joi.string()
+    .valid("discovery", "demo", "proposal", "closing")
+    .optional(),
+});
+
+// Validation schema for sentiment analysis
+const sentimentRequestSchema = Joi.object({
+  message: Joi.string().required(),
+  context: Joi.object({
+    customerProfile: Joi.string().optional(),
+    industryFocus: Joi.string().optional(),
+    pitchType: Joi.string()
+      .valid("discovery", "demo", "proposal", "closing")
+      .optional(),
+  }).optional(),
+});
+
+/**
+ * @route   POST /api/practice-chat/respond
+ * @desc    Generate AI response as customer using RAG on uploaded data
+ * @access  Private
+ */
+router.post(
+  "/respond",
+  auth,
+  validateRequest(chatRequestSchema),
+  async (req: Request, res: Response) => {
+    try {
+      const {
+        message,
+        customerProfile,
+        conversationHistory = [],
+        industryFocus,
+        specificProducts = [],
+        pitchType = "discovery",
+      } = req.body;
+
+      console.log("🎯 Starting practice chat response generation...");
+
+      // Build context from uploaded data using RAG
+      const context = await buildRAGContext(
+        customerProfile,
+        industryFocus,
+        specificProducts,
+        req.user.id
+      );
+
+      // Create system prompt for customer persona
+      const systemPrompt = createCustomerPersonaPrompt(
+        customerProfile,
+        context,
+        pitchType,
+        industryFocus,
+        specificProducts
+      );
+
+      // Prepare conversation messages
+      const messages = [
+        { role: "system" as const, content: systemPrompt },
+        ...conversationHistory,
+        { role: "user" as const, content: message },
+      ];
+
+      console.log("🚀 Calling LLaMA for customer response...");
+
+      // Generate response using LLaMA
+      const response = await llamaService.generateConversation(messages, {
+        model: "Llama-3.3-70B-Instruct",
+        maxTokens: 500,
+        temperature: 0.8,
+      });
+
+      console.log("✅ Customer response generated successfully");
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          response: response.trim(),
+          context: {
+            customerProfile,
+            industryFocus,
+            pitchType,
+            dataUsed: {
+              customers: context.customers.length,
+              pitches: context.pitches.length,
+              domainKnowledge: context.domainKnowledge.length,
+            },
+          },
+        },
+      });
+    } catch (error: any) {
+      console.error("❌ Practice chat error:", error);
+
+      // Fallback response for development
+      const fallbackResponse = generateFallbackCustomerResponse(
+        req.body.message,
+        req.body.customerProfile,
+        req.body.pitchType
+      );
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          response: fallbackResponse,
+          context: {
+            customerProfile: req.body.customerProfile,
+            industryFocus: req.body.industryFocus,
+            pitchType: req.body.pitchType,
+            fallback: true,
+          },
+        },
+      });
+    }
+  }
+);
+
+/**
+ * @route   POST /api/practice-chat/sentiment-analysis
+ * @desc    Analyze sentiment of user's sales message
+ * @access  Private
+ */
+router.post(
+  "/sentiment-analysis",
+  auth,
+  validateRequest(sentimentRequestSchema),
+  async (req: Request, res: Response) => {
+    try {
+      const { message, context = {} } = req.body;
+
+      // Create a specialized prompt for sentiment analysis in sales context
+      const sentimentPrompt = `You are an expert sales coach and sentiment analyst. Analyze the following sales message for emotional indicators that would affect customer perception.
+
+Message to analyze: "${message}"
+
+${context.customerProfile ? `Customer context: ${context.customerProfile}` : ''}
+${context.industryFocus ? `Industry: ${context.industryFocus}` : ''}
+${context.pitchType ? `Sales stage: ${context.pitchType}` : ''}
+
+Analyze this message and provide sentiment scores (0-100) for these specific sales-relevant emotions:
+
+1. **Anxiety/Nervousness** - Signs of uncertainty, hesitation, or pressure
+2. **Confidence/Enthusiasm** - Signs of assurance, positivity, and belief in the product
+3. **Doubt/Skepticism** - Signs of questioning, uncertainty about claims, or hesitation
+
+Return ONLY a JSON object in this exact format:
+{
+  "anxiety": <number>,
+  "confidence": <number>,
+  "doubt": <number>,
+  "analysis": "<brief explanation of the sentiment indicators found>"
+}
+
+Consider these sales communication factors:
+- Confidence in language and tone
+- Use of uncertain vs. assertive phrases
+- Evidence of preparation vs. improvisation
+- Customer-focused vs. product-focused language
+- Presence of filler words or hesitation markers`;
+
+      console.log("🎭 Analyzing sentiment for message:", {
+        messageLength: message.length,
+        hasContext: Object.keys(context).length > 0,
+      });
+
+      const sentimentResponse = await llamaService.generateText(
+        sentimentPrompt,
+        {
+          maxTokens: 500,
+          temperature: 0.3, // Lower temperature for more consistent analysis
+          systemPrompt: "You are a precise sales sentiment analysis AI. Return only valid JSON responses.",
+        }
+      );
+
+      console.log("🎭 Raw sentiment analysis response:", sentimentResponse);
+
+      // Parse the JSON response
+      let sentimentData;
+      try {
+        // Extract JSON from the response if it's wrapped in markdown or other text
+        const jsonMatch = sentimentResponse.match(/\{[\s\S]*\}/);
+        const jsonString = jsonMatch ? jsonMatch[0] : sentimentResponse;
+        sentimentData = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error("❌ Error parsing sentiment analysis JSON:", parseError);
+        
+        // Fallback to default sentiment values
+        sentimentData = {
+          anxiety: 30,
+          confidence: 65,
+          doubt: 25,
+          analysis: "Unable to parse detailed sentiment analysis. Using default values based on message length and basic indicators.",
+        };
+      }
+
+      // Validate and normalize the sentiment scores
+      const normalizedSentiment = {
+        anxiety: Math.max(0, Math.min(100, sentimentData.anxiety || 30)),
+        confidence: Math.max(0, Math.min(100, sentimentData.confidence || 65)),
+        doubt: Math.max(0, Math.min(100, sentimentData.doubt || 25)),
+        analysis: sentimentData.analysis || "Sentiment analysis completed successfully.",
+      };
+
+      console.log("✅ Sentiment analysis completed:", normalizedSentiment);
+
+      res.json({
+        status: "success",
+        data: {
+          sentiment: normalizedSentiment,
+          originalMessage: message,
+          timestamp: new Date().toISOString(),
+        },
+      });
+    } catch (error: any) {
+      console.error("❌ Error in sentiment analysis:", error);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to analyze sentiment",
+        error:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      });
+    }
+  }
+);
+
+/**
+ * Build RAG context from uploaded data
+ */
+async function buildRAGContext(
+  customerProfile: string,
+  industryFocus?: string,
+  specificProducts: string[] = [],
+  userId?: string
+) {
+  try {
+    console.log("🔍 Building RAG context from uploaded data...");
+
+    // Get

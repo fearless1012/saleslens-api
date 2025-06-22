@@ -13,6 +13,7 @@ import uploadRoutes from "../routes/upload";
 import llamaRoutes from "../routes/llama";
 import trainingModulesRoutes from "../routes/trainingModules";
 import transcriptsRoutes from "../routes/transcripts";
+import practiceChatRoutes from "../routes/practiceChat";
 
 export const setupRoutes = (app: Express): void => {
   app.use("/api/auth", authRoutes);
@@ -29,6 +30,7 @@ export const setupRoutes = (app: Express): void => {
   app.use("/api/llama", llamaRoutes);
   app.use("/api/training-modules", trainingModulesRoutes);
   app.use("/api/transcripts", transcriptsRoutes);
+  app.use("/api/practice-chat", practiceChatRoutes);
 
   // Error handling middleware
   app.use(
