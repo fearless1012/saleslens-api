@@ -188,4 +188,136 @@ router.get("/test-llama", auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST api/training-modules/generate-slides
+ * @desc    Generate presentation slides using SlidesGPT API
+ * @access  Private
+ */
+router.post("/generate-slides", auth, async (req, res) => {
+  try {
+    console.log("🎨 Slides generation requested by user:", req.body.user?.id);
+
+    const { prompt } = req.body;
+    const slideApiKey = process.env.slideapi;
+
+    if (!slideApiKey) {
+      return res.status(500).json({
+        status: "error",
+        message: "Slides API key not configured",
+      });
+    }
+
+    if (!prompt) {
+      return res.status(400).json({
+        status: "error",
+        message: "Prompt is required",
+      });
+    }
+
+    // Default prompt if none provided
+    const finalPrompt =
+      prompt ||
+      "Create a comprehensive training module about Meta offerings including Meta Ads, AR/VR solutions, and AI API tools. Include best practices, key metrics like ROAS, CTR, CPA, campaign objectives, and practical implementation strategies for performance marketing.";
+
+    console.log("🔄 Generating presentation with SlidesGPT...");
+
+    const response = await fetch(
+      "https://api.slidesgpt.com/v1/presentations/generate",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${slideApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: finalPrompt }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ SlidesGPT API Error:", errorText);
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("✅ Slides generated successfully:", result);
+
+    res.json({
+      status: "success",
+      message: "Presentation generated successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    console.error("❌ Slides generation failed:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to generate presentation",
+      error: error.message,
+    });
+  }
+});
+
+/**
+ * @route   GET api/training-modules/download-slides/:id
+ * @desc    Download presentation slides as PPTX
+ * @access  Private
+ */
+router.get("/download-slides/:id", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const slideApiKey = process.env.slideapi;
+
+    if (!slideApiKey) {
+      return res.status(500).json({
+        status: "error",
+        message: "Slides API key not configured",
+      });
+    }
+
+    console.log("📥 Downloading presentation:", id);
+
+    const response = await fetch(
+      `https://api.slidesgpt.com/v1/presentations/${id}/download`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${slideApiKey}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Download failed:", errorText);
+      throw new Error(
+        `Download failed: ${response.status} ${response.statusText}`
+      );
+    }
+
+    // Set headers for file download
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="training-module-${id}.pptx"`
+    );
+
+    // Get the buffer and send it
+    const buffer = await response.arrayBuffer();
+    res.send(Buffer.from(buffer));
+  } catch (error: any) {
+    console.error("❌ Slides download failed:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to download presentation",
+      error: error.message,
+    });
+  }
+});
+
 export default router;

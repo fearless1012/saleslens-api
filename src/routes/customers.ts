@@ -418,4 +418,175 @@ router.get("/search/:query", auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST api/customers/generate-profiles
+ * @desc    Generate customer profiles using LLaMA AI
+ * @access  Private
+ */
+router.post("/generate-profiles", auth, async (req, res) => {
+  try {
+    const {
+      count = 3,
+      industries = ["Technology", "Healthcare", "Finance"],
+      focusAreas = ["Startups", "Enterprise", "SMB"],
+      analysisDepth = "detailed",
+    } = req.body;
+
+    // Import the llamaIntegrationService
+    const { llamaIntegrationService } = await import(
+      "../services/llamaIntegrationService"
+    );
+
+    // Get existing customer data for context
+    const existingCustomers = await Customer.find()
+      .limit(10)
+      .select("company industry position requirements status tags")
+      .lean();
+
+    // Prepare the context for LLaMA
+    const context = {
+      existingCustomers: existingCustomers.map((customer) => ({
+        company: customer.company,
+        industry: customer.industry,
+        position: customer.position,
+        requirements: customer.requirements,
+        status: customer.status,
+        tags: customer.tags,
+      })),
+      requestedCount: count,
+      targetIndustries: industries,
+      focusAreas: focusAreas,
+      analysisDepth: analysisDepth,
+    };
+
+    // Create a prompt for generating customer profiles
+    const systemPrompt = `You are an AI sales expert that analyzes customer databases and generates realistic customer profiles. Based on the existing customer data patterns, create new customer profiles that match the sales context and industry patterns.`;
+
+    const userPrompt = `Based on the following customer database analysis, generate ${count} new customer profiles that would be valuable for sales training and practice scenarios.
+
+Existing Customer Patterns:
+${JSON.stringify(context.existingCustomers, null, 2)}
+
+Requirements:
+- Generate ${count} diverse customer profiles
+- Focus on industries: ${industries.join(", ")}
+- Target areas: ${focusAreas.join(", ")}
+- Analysis depth: ${analysisDepth}
+
+For each customer profile, provide:
+1. Company name and industry
+2. Customer stage (Early-Stage Startups, Growth Companies, Enterprise, etc.)
+3. Key traits (4-5 behavioral characteristics)
+4. Value proposition points (4-5 items)
+5. Common pain points (3-4 items)
+6. Typical objections (3-4 items)
+7. Position/role title
+8. Brief description
+
+Format the response as a JSON array with the following structure:
+[
+  {
+    "company": "Company Name",
+    "industry": "Industry Type",
+    "stage": "Customer Stage",
+    "description": "Brief description of the customer segment",
+    "position": "Decision Maker Role",
+    "keyTraits": ["trait1", "trait2", "trait3", "trait4"],
+    "valueProposition": ["value1", "value2", "value3", "value4"],
+    "painPoints": ["pain1", "pain2", "pain3"],
+    "objections": ["objection1", "objection2", "objection3"],
+    "status": "prospect",
+    "tags": ["tag1", "tag2"]
+  }
+]
+
+Ensure the profiles are realistic, diverse, and suitable for sales training scenarios.`;
+
+    // Use the existing LLaMA service to generate profiles
+    const { llamaService } = await import("../services/llamaService");
+
+    const response = await llamaService.generateText(userPrompt, {
+      systemPrompt,
+      model: "llama-3.3-70b-instruct",
+      maxTokens: 2000,
+      temperature: 0.8,
+    });
+
+    // Parse the response to extract customer profiles
+    let generatedProfiles;
+    try {
+      // Clean the response to extract JSON
+      const jsonMatch = response.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        generatedProfiles = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error("No valid JSON found in response");
+      }
+    } catch (parseError) {
+      console.error("Error parsing LLaMA response:", parseError);
+
+      // Fallback: generate default profiles
+      generatedProfiles = [
+        {
+          company: "AI-Generated Startup",
+          industry: "Technology",
+          stage: "Early-Stage Startup",
+          description:
+            "Fast-growing technology startup focused on digital transformation",
+          position: "Chief Technology Officer",
+          keyTraits: [
+            "Data-driven decision making",
+            "Values rapid implementation",
+            "Budget-conscious but ROI-focused",
+            "Prefers modern, scalable solutions",
+          ],
+          valueProposition: [
+            "Reduce development time by 40%",
+            "Seamless API integrations",
+            "Scalable architecture support",
+            "Cost-effective implementation",
+          ],
+          painPoints: [
+            "Limited technical resources",
+            "Tight budget constraints",
+            "Need for quick deployment",
+          ],
+          objections: [
+            "Already have in-house solution",
+            "Concerned about integration complexity",
+            "Budget approval needed",
+          ],
+          status: "prospect",
+          tags: ["startup", "technology", "ai-generated"],
+        },
+      ];
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        profiles: generatedProfiles,
+        metadata: {
+          generatedAt: new Date().toISOString(),
+          count: generatedProfiles.length,
+          source: "llama-ai-generation",
+          requestParams: {
+            count,
+            industries,
+            focusAreas,
+            analysisDepth,
+          },
+        },
+      },
+    });
+  } catch (error: any) {
+    console.error("Error generating customer profiles:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to generate customer profiles",
+      details: error?.message || "Unknown error occurred",
+    });
+  }
+});
+
 export default router;
